@@ -15,7 +15,7 @@ const TEMP_DIR = `${__dirname}/tmp`
 
 sharp.cache(0)
 
-// module.exports = (coord, hollaback) => {
+module.exports = (coord, hollaback) => {
   let point = {
     "type": "Point",
     "coordinates": [-89, 43]
@@ -121,4 +121,4 @@ sharp.cache(0)
     if (error) return hollback(error)
     hollaback(null, jpeg)
   })
-// }
+}
