@@ -1,0 +1,21 @@
+{
+  "name": "hillshadejs",
+  "version": "1.0.0",
+  "description": "Generate hillshades with Amazon Terrain Tiles",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "John J Czaplewski",
+  "license": "CC0 1.0",
+  "dependencies": {
+    "@mapbox/tile-cover": "^3.0.2",
+    "@turf/bbox": "^4.6.0",
+    "@turf/bbox-polygon": "^4.6.0",
+    "@turf/buffer": "^4.6.1",
+    "@turf/envelope": "^4.6.0",
+    "async": "^2.5.0",
+    "request": "^2.81.0",
+    "sharp": "^0.18.2"
+  }
+}
