@@ -28,14 +28,21 @@ module.exports = (coord, hollaback) => {
     return coords[1]
   })
 
-  let minLat = Math.min(...minLats)
-  let maxLat = Math.max(...minLats)
+  let minLat = Math.min.apply(null, minLats)
+  let maxLat = Math.max.apply(null, minLats)
+
+  // let minLat = Math.min(...minLats)
+  // let maxLat = Math.max(...minLats)
 
   let maxLngs = bigBuffer.geometry.coordinates[0].map(coords => {
     return coords[0]
   })
-  let minMaxLng = Math.min(...maxLngs)
-  let maxMaxLng = Math.max(...maxLngs)
+
+  let minMaxLng = Math.min.apply(null, maxLngs)
+  let maxMaxLng = Math.max.apply(null, maxLns)
+
+  // let minMaxLng = Math.min(...maxLngs)
+  // let maxMaxLng = Math.max(...maxLngs)
 
   let pBbox = [ minMaxLng, minLat, maxMaxLng, maxLat ]
 
