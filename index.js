@@ -15,10 +15,10 @@ const TEMP_DIR = `${__dirname}/tmp`
 
 sharp.cache(0)
 
-module.exports = (coord, hollaback) => {
+// module.exports = (coord, hollaback) => {
   let point = {
     "type": "Point",
-    "coordinates": coord
+    "coordinates": [-89, 43]
   }
 
   let bigBuffer = envelope(buffer(point, 4, 'miles'))
@@ -39,7 +39,7 @@ module.exports = (coord, hollaback) => {
   })
 
   let minMaxLng = Math.min.apply(null, maxLngs)
-  let maxMaxLng = Math.max.apply(null, maxLns)
+  let maxMaxLng = Math.max.apply(null, maxLngs)
 
   // let minMaxLng = Math.min(...maxLngs)
   // let maxMaxLng = Math.max(...maxLngs)
@@ -121,4 +121,4 @@ module.exports = (coord, hollaback) => {
     if (error) return hollback(error)
     hollaback(null, jpeg)
   })
-}
+// }
