@@ -69,10 +69,13 @@ module.exports = (extent, options, hollaback) => {
     max_zoom: zoom
   })
 
+  // Don't allow areas that require > 50 tiles...
   if (tiles.length > 50) {
     return hollaback(`Too many tiles are needed to cover this area. Please
       choose a smaller extent or a smaller zoom level.`)
   }
+  
+  // Don't process if there are no tiles to process
   if (tiles.length === 0) {
     return hollaback(`The provided extent is a negative area.`)
   }
@@ -82,6 +85,7 @@ module.exports = (extent, options, hollaback) => {
   })
 
   async.waterfall([
+    // Download all needed tiles, 10 at a time
     (callback) => {
       async.eachLimit(tiles, 10, (tile, done) => {
         request(`https://s3.amazonaws.com/elevation-tiles-prod/geotiff/${tile[2]}/${tile[0]}/${tile[1]}.tif`)
@@ -131,7 +135,7 @@ module.exports = (extent, options, hollaback) => {
 
     // Clean up temporary files
     (jpeg, callback) => {
-      let toDelete = tilePaths.concat([ `${TEMP_DIR}/${fileName}_merged.tif`, `${TEMP_DIR}/${fileName}_shaded.tif`])
+      let toDelete = tilePaths.concat([ `${TEMP_DIR}/${fileName}_merged.tif`, `${TEMP_DIR}/${fileName}_shaded.tif` ])
 
       async.eachLimit(toDelete, 10, (file, done) => {
         fs.unlink(file, error => {
