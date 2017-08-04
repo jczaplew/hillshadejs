@@ -98,9 +98,9 @@ module.exports = (extent, options, hollaback) => {
       })
     },
 
-    // Combine the elevation tiles to a single raster
+    // Combine the elevation tiles to a single raster and clip to extent
     (callback) => {
-      exec(`gdalwarp -wm 4000 ${tilePaths.join(' ')} ${TEMP_DIR}/${fileName}_merged.tif`, (error, stdout, stderror) => {
+      exec(`gdalwarp -wm 4000 ${tilePaths.join(' ')} -te_srs EPSG:4326 -te ${extent.join(' ')} ${TEMP_DIR}/${fileName}_merged.tif`, (error, stdout, stderror) => {
         if (error) {
           return callback(error)
         }
@@ -108,17 +108,9 @@ module.exports = (extent, options, hollaback) => {
       })
     },
 
-    // Crop the merged tiles to the desired extent
-    (callback) => {
-      exec(`gdalwarp -te_srs EPSG:4326 -te ${extent.join(' ')} ${TEMP_DIR}/${fileName}_merged.tif ${TEMP_DIR}/${fileName}_clipped.tif`, (error, stdout, stderr) => {
-        if (error) return callback(error)
-        callback(null)
-      })
-    },
-
     // Generate the hillshade
     (callback) => {
-      exec(`gdaldem hillshade -s 3 -az 315 -z 4  ${TEMP_DIR}/${fileName}_clipped.tif ${TEMP_DIR}/${fileName}_shaded.tif`, (error, stdout, stderr) => {
+      exec(`gdaldem hillshade -s 3 -az 315 -z 4  ${TEMP_DIR}/${fileName}_merged.tif ${TEMP_DIR}/${fileName}_shaded.tif`, (error, stdout, stderr) => {
         if (error) return callback(error)
         callback(null)
       })
@@ -139,7 +131,7 @@ module.exports = (extent, options, hollaback) => {
 
     // Clean up temporary files
     (jpeg, callback) => {
-      let toDelete = tilePaths.concat([ `${TEMP_DIR}/${fileName}_merged.tif`, `${TEMP_DIR}/${fileName}_clipped.tif`, `${TEMP_DIR}/${fileName}_shaded.tif`])
+      let toDelete = tilePaths.concat([ `${TEMP_DIR}/${fileName}_merged.tif`, `${TEMP_DIR}/${fileName}_shaded.tif`])
 
       async.eachLimit(toDelete, 10, (file, done) => {
         fs.unlink(file, error => {
