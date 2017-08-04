@@ -74,7 +74,7 @@ module.exports = (extent, options, hollaback) => {
     return hollaback(`Too many tiles are needed to cover this area. Please
       choose a smaller extent or a smaller zoom level.`)
   }
-  
+
   // Don't process if there are no tiles to process
   if (tiles.length === 0) {
     return hollaback(`The provided extent is a negative area.`)
@@ -147,7 +147,7 @@ module.exports = (extent, options, hollaback) => {
     }
 
   ], (error, jpeg) => {
-    if (error) return hollback(error)
+    if (error) return hollaback(error)
     hollaback(null, jpeg)
   })
 }
