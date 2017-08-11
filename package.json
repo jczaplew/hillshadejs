@@ -13,6 +13,6 @@
     "@turf/bbox-polygon": "^4.6.0",
     "async": "^2.5.0",
     "request": "^2.81.0",
-    "sharp": "^0.18.2"
+    "sharp": "^0.11.0"
   }
 }
